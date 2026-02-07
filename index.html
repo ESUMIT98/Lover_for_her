@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Esita ❤️</title>
+
+<style>
+html, body {
+    margin:0;
+    padding:0;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    font-family:'Segoe UI', sans-serif;
+    background:black;
+    color:white;
+}
+
+/* INTRO SCREEN */
+#intro {
+    position:fixed;
+    width:100%;
+    height:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:40px;
+    letter-spacing:4px;
+    background:black;
+    animation:fadeOut 4s forwards;
+}
+
+@keyframes fadeOut {
+    0%{opacity:1;}
+    80%{opacity:1;}
+    100%{opacity:0; visibility:hidden;}
+}
+
+/* MAIN SCREEN */
+#main {
+    display:none;
+    width:100%;
+    height:100%;
+    text-align:center;
+    background:linear-gradient(-45deg,#ff4e50,#ff6a88,#f9d423,#ff99ac);
+    background-size:400% 400%;
+    animation:gradientBG 8s ease infinite, zoomIn 10s ease-in-out infinite alternate;
+}
+
+@keyframes gradientBG {
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+
+@keyframes zoomIn {
+    from{transform:scale(1);}
+    to{transform:scale(1.05);}
+}
+
+h1 { margin-top:120px; font-size:40px; }
+h2 { font-size:28px; }
+
+button {
+    padding:15px 35px;
+    font-size:20px;
+    margin:20px;
+    border:none;
+    border-radius:50px;
+    cursor:pointer;
+}
+
+#yesBtn {
+    background:#ff1744;
+    color:white;
+}
+
+#noBtn {
+    background:white;
+    color:#ff1744;
+}
+
+/* Canvas */
+canvas {
+    position:fixed;
+    top:0;
+    left:0;
+    pointer-events:none;
+}
+</style>
+</head>
+
+<body>
+
+<div id="intro">
+    A Special Message For Esita ❤️
+</div>
+
+<div id="main">
+    <h1>I love you so much Esita ❤️</h1>
+    <h2>Do you love me Mumma??? 💕</h2>
+    <button id="yesBtn">Yes 💖</button>
+    <button id="noBtn">No 😜</button>
+</div>
+
+<canvas id="canvas"></canvas>
+
+<script>
+setTimeout(()=>{
+    document.getElementById("main").style.display="block";
+},4000);
+
+const yesBtn=document.getElementById("yesBtn");
+const noBtn=document.getElementById("noBtn");
+
+yesBtn.onclick=()=>startCelebration();
+
+noBtn.onclick=()=>{
+    noBtn.innerText="Yes 💖";
+    noBtn.style.background="#ff1744";
+    noBtn.style.color="white";
+    startCelebration();
+};
+
+function startCelebration(){
+    alert("Thanks for loving me ❤️✨");
+    startFireworks();
+    setTimeout(()=>{
+        stopFireworks();
+        startHeartRain();
+        setTimeout(stopHeartRain,5000);
+    },5000);
+}
+
+/* Canvas Setup */
+const canvas=document.getElementById("canvas");
+const ctx=canvas.getContext("2d");
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+let particles=[];
+let animationId;
+
+/* BIG FIREWORKS */
+function startFireworks(){
+    particles=[];
+    for(let i=0;i<200;i++){
+        particles.push({
+            x:canvas.width/2,
+            y:canvas.height/2,
+            radius:4,
+            color:"hsl("+Math.random()*360+",100%,60%)",
+            speedX:(Math.random()-0.5)*12,
+            speedY:(Math.random()-0.5)*12,
+            life:80
+        });
+    }
+    animateFireworks();
+}
+
+function animateFireworks(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particles.forEach((p,index)=>{
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,p.radius,0,Math.PI*2);
+        ctx.fillStyle=p.color;
+        ctx.fill();
+        p.x+=p.speedX;
+        p.y+=p.speedY;
+        p.life--;
+        if(p.life<=0) particles.splice(index,1);
+    });
+    animationId=requestAnimationFrame(animateFireworks);
+}
+
+function stopFireworks(){
+    cancelAnimationFrame(animationId);
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+}
+
+/* HEART RAIN */
+let hearts=[];
+let heartAnim;
+
+function startHeartRain(){
+    hearts=[];
+    for(let i=0;i<100;i++){
+        hearts.push({
+            x:Math.random()*canvas.width,
+            y:Math.random()*-canvas.height,
+            size:20+Math.random()*20,
+            speed:2+Math.random()*3
+        });
+    }
+    animateHearts();
+}
+
+function animateHearts(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    hearts.forEach(h=>{
+        ctx.font=h.size+"px Arial";
+        ctx.fillText("❤️",h.x,h.y);
+        h.y+=h.speed;
+    });
+    heartAnim=requestAnimationFrame(animateHearts);
+}
+
+function stopHeartRain(){
+    cancelAnimationFrame(heartAnim);
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+}
+</script>
+
+</body>
+</html>
